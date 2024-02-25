@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { FaHeart } from "react-icons/fa";
+import { FaArrowAltCircleUp } from "react-icons/fa";
+import { FaArrowAltCircleDown } from "react-icons/fa";
+
 import axios from "axios";
 import "./VideoPlayer.css";
 
@@ -13,6 +16,18 @@ const VideoPlayer = () => {
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [likes, setLikes] = useState(Array(videos.length).fill(false));
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -75,6 +90,16 @@ const VideoPlayer = () => {
     });
     playerRef.current.focus();
   };
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % videos.length);
+  };
+  const handlePrev = () => {
+    if (currentIndex === 0) {
+      setCurrentIndex(videos.length - 1);
+    } else {
+      setCurrentIndex((prev) => prev - 1);
+    }
+  };
   return (
     <>
       <h1 className="heading">SHORTS</h1>
@@ -104,13 +129,28 @@ const VideoPlayer = () => {
                     src={video?.video_files[0]?.link}
                     onClick={() => videoHandle(index)}
                   />
-                  <div onClick={() => handleLike(index)} className="videoLike">
+                  <div className="videoLike">
                     <FaHeart
                       size={30}
+                      onClick={() => handleLike(index)}
                       className={`${likes[index] ? "liked" : "like"} ${
                         currentIndex === index ? "show" : "hide"
-                      } `}
+                      } navigateBtn`}
                     />
+                    {isMobile && (
+                      <>
+                        <FaArrowAltCircleUp
+                          className="navigateBtn"
+                          size={30}
+                          onClick={handlePrev}
+                        />
+                        <FaArrowAltCircleDown
+                          className="navigateBtn"
+                          size={30}
+                          onClick={handleNext}
+                        />
+                      </>
+                    )}
                   </div>
                 </div>
               </>

@@ -1,5 +1,5 @@
 .videoPlayer::-webkit-scrollbar {
-  display: none;
+  /* display: none; */
 }
 .heading {
   letter-spacing: 1.5px;
@@ -13,11 +13,12 @@
   height: 80vh;
   scroll-snap-align: start;
   border-radius: 20px;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   padding: 1em 3em 1em 0;
   display: flex;
   border: none;
   flex-direction: row;
+  border: 1px solid red;
 }
 .videoDiv {
   display: flex;
@@ -33,14 +34,19 @@
 }
 .videoLike {
   position: absolute;
-  bottom: 5em;
+  bottom: 3em;
   right: 0.2em;
+  display: flex;
+  flex-direction: column;
   padding: 5px;
   border-radius: 8px;
   text-align: center;
   border: 1px solid gray;
   background: lightcyan;
   cursor: pointer;
+}
+.navigateBtn{
+  margin:7px 0
 }
 
 .show {
@@ -86,5 +92,6 @@
 @media screen and (max-width: 640px) {
   .videoPlayer {
     width: 300px;
+    overflow-y: scroll;
   }
 }
